@@ -1,15 +1,16 @@
+/* purple "dracula" dark mode theme, replaces teal */
 .theme-teal {
   --color-50: 254 254 255;
   --color-100: 68 71 90;
-  --color-200: 189 147 249; /*dark mode widget text*/
-  --color-300: 255 121 198; /*dark mode widget titles*/
-  --color-400: 80 250 123; /*version info*/
-  --color-500: 146 79 242; /*light mode running bg*/
+  --color-200: 189 147 249; /* dark mode widget text */
+  --color-300: 255 121 198; /* dark mode widget titles */
+  --color-400: 80 250 123; /* version info */
+  --color-500: 146 79 242; /* light mode running bg */
   --color-600: 125 46 237;
-  --color-700: 80 250 123; /*light mode widget text */
+  --color-700: 80 250 123; /* light mode widget text */
   --color-800: 89 20 187;
-  --color-800: 255 121 198; /*light mode widget titles*/
-  --color-900: 68 71 90; /*dark mode widget bg*/
+  --color-800: 255 121 198; /* light mode widget titles */
+  --color-900: 68 71 90; /* dark mode widget bg */
     
   --color-default: 255 121 198;
   --color-logo-start: 80 250 123;
@@ -17,7 +18,24 @@
   --background-color: 189 147 249;
 }
 
-.bg-rose-900\/80 { /*change widget error colours to match theme*/
+/* red & black "ibracorp" theme, replaces amber */
+.theme-amber {
+    --color-50: 248 250 252;
+    --color-100: 38 42 43;
+    --color-200: 209 96 87;
+    --color-300: 209 96 87;
+    --color-400: 239 122 112;
+    --color-500: 239 122 112;
+    --color-600: 209 96 87;
+    --color-700: 51 51 51;
+    --color-800: 38 42 43;
+    --color-900: 27 27 27;
+    --color-logo-start: 209, 96, 87;
+    --color-logo-stop: 209, 96, 87;
+}
+
+/* change widget error colours to match theme */
+.bg-rose-900\/80 {
   background-color:rgb(var(--color-200)/.5)
 }
  
