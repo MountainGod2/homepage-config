@@ -3,7 +3,7 @@
  https://github.com/benphelps/homepage/
  
  Also included is `customtheme.css` showing how to further customize the colours.
- The easiest methods of using is likely either via a subfilter module in Nxinx (or similar), or a browser extenstion such as Stylus.
+ The easiest methods to use are likely either via a subfilter module in Nxinx (or similar), or with a browser extension such as Stylus.
  
  Ex.
  ```
