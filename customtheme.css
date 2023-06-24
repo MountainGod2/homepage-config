@@ -1,0 +1,26 @@
+.theme-teal {
+  --color-50: 254 254 255;
+  --color-100: 68 71 90;
+  --color-200: 189 147 249; /*dark mode widget text*/
+  --color-300: 255 121 198; /*dark mode widget titles*/
+  --color-400: 80 250 123; /*version info*/
+  --color-500: 146 79 242; /*light mode running bg*/
+  --color-600: 125 46 237;
+  --color-700: 80 250 123; /*light mode widget text */
+  --color-800: 89 20 187;
+  --color-800: 255 121 198; /*light mode widget titles*/
+  --color-900: 68 71 90; /*dark mode widget bg*/
+    
+  --color-default: 255 121 198;
+  --color-logo-start: 80 250 123;
+  --color-logo-stop: 80 250 123;
+  --background-color: 189 147 249;
+}
+
+.bg-rose-900\/80 { /*change widget error colours to match theme*/
+  background-color:rgb(var(--color-200)/.5)
+}
+ 
+ .hover\:bg-rose-900\/95:hover {
+  background-color:rgb(var(--color-200)/.95)
+}
