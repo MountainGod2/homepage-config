@@ -7,13 +7,19 @@
  The easiest methods to use are likely either via a subfilter module in Nginx (or similar), or with a browser extension such as Stylus.
  
  Ex.
- ```
+
+ ```nginx
+server {
+# ...
+    location / {
         proxy_set_header Accept-Encoding "";
         sub_filter
         '</head>'
-        '<link rel="stylesheet" type="text/css" href="https://raw.githubusercontent.com/MountainGod2/homepage_config/main/customtheme.css">
+        '<link rel="stylesheet" type="text/css" href="https://www.domain.com/customtheme.css">
         </head>';
         sub_filter_once on;
+
+        proxy_pass http://host.ip:3000;
 ```
 
  or 
