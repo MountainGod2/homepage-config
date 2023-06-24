@@ -1,0 +1,28 @@
+# https://gethomepage.dev/en/widgets/openweathermap/
+# https://gethomepage.dev/en/widgets/datetime/
+# https://gethomepage.dev/en/widgets/resources/
+
+- openweathermap:
+    label: Calgary, AB
+    units: metric
+    apiKey:
+    cache: 10
+
+- datetime:
+    text_size: sm
+    format:
+      dateStyle: short
+      timeStyle: short
+      hour12: true
+
+- logo:
+
+- resources:
+    cpu: true
+    memory: true
+    expanded: true
+- resources:
+    expanded: true
+    disk:
+      - /mnt/cache
+      - /mnt/user0
