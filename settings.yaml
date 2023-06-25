@@ -1,9 +1,5 @@
 # https://gethomepage.dev/en/configs/settings
 
-providers:
-  openweathermap: openweathermapapikey
-  weatherapi: weatherapiapikey
-
 fiveColumns: true
 
 background: /images/background_solid.png
