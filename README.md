@@ -1,4 +1,4 @@
-# homepage_config
+# homepage-config
  Personal collection of config files for Homepage
  
  https://github.com/benphelps/homepage/
