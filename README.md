@@ -6,26 +6,21 @@
 # Services.yaml
   There are two versions of the services configuration file in this repository.
 
-  The first is a sanitized version using standard keys.
+  The first is a sanitized version using standard keys:
   
-  `services.yaml`
+  [`services.yaml`](https://github.com/MountainGod2/homepage-config/blob/main/services.yaml)
 
-  While the second uses IP / key substitutions from environment variables used in the homepage container creation.
+  While the second uses IP / key substitutions from environment variables used in the homepage container creation:
   
-  `services-env.yaml`
+  [`services-env.yaml`](https://github.com/MountainGod2/homepage-config/blob/main/services-env.yaml)
 
-  Ex.
-  
+  Example docker run command using enviroment label substitutions:  
 ```yaml
-# example docker run command using enviroment label substitutions
-
 docker run \
   -d \
   --name='homepage' \
-  --net='dsn' \
+  --net='dsn' \ #user-defined bridge network to allow for referring to containers by hostname instead of IP
   -e TZ="America/Denver" \
-  -e HOST_HOSTNAME="mercury" \
-  -e HOST_CONTAINERNAME="homepage" \
   -e 'HOMEPAGE_VAR_ROUTER_IP'='192.168.0.1' \
   -e 'HOMEPAGE_VAR_SERVER_IP'='192.168.0.100' \
   -e 'HOMEPAGE_VAR_CLOUDFLARE_ACCOUNT_ID'='XXXXX' \
