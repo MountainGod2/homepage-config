@@ -4,38 +4,70 @@
   https://github.com/benphelps/homepage/
  
 # Services.yaml
-  There are two versions of `services.yaml` in this repository. The first is a sanitized version using standard keys.
+  There are two versions of the services configuration file in this repository.
 
-  While the second, `services-env.yaml`, uses IP / key substitutions from environment variables used in the homepage container creation.
+  The first is a sanitized version using standard keys.
+  
+  `services.yaml`
+
+  While the second uses IP / key substitutions from environment variables used in the homepage container creation.
+  
+  `services-env.yaml`
 
   Ex.
   
-```
-docker run
-  -d
-  --name=homepage
-  -p 3000:3000/tcp
-  -e HOMEPAGE_VAR_ROUTER_IP='192.168.0.1'
-  -e HOMEPAGE_VAR_SERVER_IP='192.168.0.100'
-  -e HOMEPAGE_VAR_PLEX_API_KEY='XXXXXXXXX'
-  -e HOMEPAGE_VAR_TAUTULLI_API_KEY='XXXXXXXXX'
-  -e HOMEPAGE_VAR_CLOUDFLARE_ACCOUNT_ID='XXXXXXXXX'
-  -e HOMEPAGE_VAR_CLOUDFLARE_TUNNEL_ID='XXXXXXXXX'
-  -e HOMEPAGE_VAR_CLOUDFLARE_TUNNEL_API_KEY='XXXXXXXXX'
-  -e HOMEPAGE_VAR_TAILSCALE_DEVICE_ID='XXXXXXXXX'
-  -e HOMEPAGE_VAR_TAILSCALE_API_KEY='tskey-api-XXXXXXXXX'
-  -e HOMEPAGE_VAR_RADARR_API_KEY='XXXXXXXXX'
-  ...
-  -v /opt/homepage/config:/app/config:rw ghcr.io/benphelps/homepage
+```yaml
+# example docker run command using enviroment label substitutions
+
+docker run \
+  -d \
+  --name='homepage' \
+  --net='dsn' \
+  -e TZ="America/Denver" \
+  -e HOST_HOSTNAME="mercury" \
+  -e HOST_CONTAINERNAME="homepage" \
+  -e 'HOMEPAGE_VAR_ROUTER_IP'='192.168.0.1' \
+  -e 'HOMEPAGE_VAR_SERVER_IP'='192.168.0.100' \
+  -e 'HOMEPAGE_VAR_CLOUDFLARE_ACCOUNT_ID'='XXXXX' \
+  -e 'HOMEPAGE_VAR_CLOUDFLARE_TUNNEL_ID'='XXXXX' \
+  -e 'HOMEPAGE_VAR_CLOUDFLARE_TUNNEL_API_KEY'='XXXXX' \
+  -e 'HOMEPAGE_VAR_TAILSCALE_DEVICE_ID'='XXXXX' \
+  -e 'HOMEPAGE_VAR_TAILSCALE_API_KEY'='tskey-api-XXXXX' \
+  -e 'HOMEPAGE_VAR_OVERSEERR_API_KEY'='XXXXX' \
+  -e 'HOMEPAGE_VAR_QBITTORRENT_UN'='XXXXX' \
+  -e 'HOMEPAGE_VAR_QBITTORRENT_PW'='XXXXX' \
+  -e 'HOMEPAGE_VAR_SABNZBD_API_KEY'='XXXXX' \
+  -e 'HOMEPAGE_VAR_PLEX_API_KEY'='XXXXX' \
+  -e 'HOMEPAGE_VAR_TAUTULLI_API_KEY'='XXXXX' \
+  -e 'HOMEPAGE_VAR_RADARR_API_KEY'='XXXXX' \
+  -e 'HOMEPAGE_VAR_RADARR4K_API_KEY'='XXXXX' \
+  -e 'HOMEPAGE_VAR_SONARR_API_KEY'='XXXXX' \
+  -e 'HOMEPAGE_VAR_BAZARR_API_KEY'='XXXXX' \
+  -e 'HOMEPAGE_VAR_PROWLARR_API_KEY'='XXXXX' \
+  -e 'HOMEPAGE_VAR_OPNSENSE_UN'='XXXXX' \
+  -e 'HOMEPAGE_VAR_OPNSENSE_PW'='XXXXX' \
+  -e 'HOMEPAGE_VAR_ADGUARD_UN'='XXXXX' \
+  -e 'HOMEPAGE_VAR_ADGUARD_PW'='XXXXX' \
+  -e 'HOMEPAGE_VAR_HOMEASSISTANT_LLAT'='XXXXX' \
+  -v '/mnt/':'/mnt':'ro' \
+  -v '/mnt/user/appdata/homepage/config':'/app/config':'rw' \
+  -v '/mnt/user/appdata/homepage/images/':'/app/public/images':'rw' \
+  -v '/mnt/user/appdata/homepage/icons/':'/app/public/icons':'rw' \
+  -p '3000:3000/tcp' \
+'ghcr.io/benphelps/homepage'
 ```
 
 # Custom CSS Themes
 
   Also included is `customtheme.css` showing how to further customize the colours.
   
-  The easiest methods to use are likely either via a subfilter module in Nginx (or similar), or with a browser extension such as Stylus.
- 
+  The easiest method is likely either via a browser extension such as Stylus, or by using a subfilter module in Nginx (or similar).
+
   Ex.
+
+![homepage_stylus](https://github.com/MountainGod2/homepage_config/assets/88257202/531d0bc7-f6d4-4045-8f01-f3db13a4f874)
+
+  or 
 
 ```nginx
 server {
@@ -51,9 +83,6 @@ server {
         proxy_pass http://host.ip:3000;
 ```
 
-  or 
-
-![homepage_stylus](https://github.com/MountainGod2/homepage_config/assets/88257202/531d0bc7-f6d4-4045-8f01-f3db13a4f874)
 
 
 
