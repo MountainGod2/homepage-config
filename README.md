@@ -1,8 +1,7 @@
 # Homepage Configs
-  Personal collection of example config files for Homepage
- 
-  https://github.com/benphelps/homepage/
- 
+
+  Personal collection of example config files for [benphelps/homepage](https://github.com/benphelps/homepage/)
+  
 # Services.yaml
   There are two versions of the services configuration file in this repository.
 
@@ -14,12 +13,27 @@
   
   [`services-env.yaml`](https://github.com/MountainGod2/homepage-config/blob/main/services-env.yaml)
 
-  Example docker run command using enviroment label substitutions:  
+  Example docker run command using standard config files:
 ```yaml
 docker run \
   -d \
   --name='homepage' \
-  --net='dsn' \ #user-defined bridge network to allow for referring to containers by hostname instead of IP
+  --net='dsn' \ # user-defined bridge network to refer to containers by hostname instead of IP
+  -e TZ="America/Denver" \
+  -v '/mnt/':'/mnt':'ro' \ # read-only volume mount
+  -v '/mnt/user/appdata/homepage/config':'/app/config':'rw' \
+  -v '/mnt/user/appdata/homepage/images/':'/app/public/images':'rw' \
+  -v '/mnt/user/appdata/homepage/icons/':'/app/public/icons':'rw' \
+  -p '3000:3000/tcp' \
+'ghcr.io/benphelps/homepage'
+```
+
+  Example docker run command using environment label substitutions:
+```yaml
+docker run \
+  -d \
+  --name='homepage' \
+  --net='dsn' \ # user-defined bridge network to refer to containers by hostname instead of IP
   -e TZ="America/Denver" \
   -e 'HOMEPAGE_VAR_ROUTER_IP'='192.168.0.1' \
   -e 'HOMEPAGE_VAR_SERVER_IP'='192.168.0.100' \
@@ -44,7 +58,7 @@ docker run \
   -e 'HOMEPAGE_VAR_ADGUARD_UN'='XXXXX' \
   -e 'HOMEPAGE_VAR_ADGUARD_PW'='XXXXX' \
   -e 'HOMEPAGE_VAR_HOMEASSISTANT_LLAT'='XXXXX' \
-  -v '/mnt/':'/mnt':'ro' \
+  -v '/mnt/':'/mnt':'ro' \ # read-only volume mount
   -v '/mnt/user/appdata/homepage/config':'/app/config':'rw' \
   -v '/mnt/user/appdata/homepage/images/':'/app/public/images':'rw' \
   -v '/mnt/user/appdata/homepage/icons/':'/app/public/icons':'rw' \
@@ -54,7 +68,7 @@ docker run \
 
 # Custom CSS Themes
 
-  Also included is `customtheme.css` showing how to further customize the colours.
+  Also included is [`customtheme.css`](https://github.com/MountainGod2/homepage-config/blob/main/customtheme.css) showing how to customize the colours further.
   
   The easiest method is likely either via a browser extension such as Stylus, or by using a subfilter module in Nginx (or similar).
 
