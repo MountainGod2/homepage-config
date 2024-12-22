@@ -1,8 +1,0 @@
-# https://gethomepage.dev/en/configs/docker/
-
-# my-docker:
-#     socket: /var/run/docker.sock
-
-my-docker:
-  host: dockersocket
-  port: 2375
