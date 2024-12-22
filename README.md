@@ -2,20 +2,6 @@
 
 A personal collection of example configuration files for [gethomepage/homepage](https://github.com/gethomepage/homepage/). These examples demonstrate how to configure and customize Homepage using environment variables, Docker, and custom themes.
 
-## Table of Contents
-
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Setup](#setup)
-- [Configuration Examples](#configuration-examples)
-  - [Docker Run Command](#docker-run-command)
-  - [Environment Variables](#environment-variables)
-- [Custom Theme](#custom-theme)
-- [Screenshots](#screenshots)
-- [Credits](#credits)
-
----
-
 ## Getting Started
 
 ### Prerequisites
@@ -116,7 +102,7 @@ For more themes, check [homepage-dracula](https://github.com/Jas-SinghFSU/homepa
 
 ## Screenshots
 
-![Homepage Example](https://github.com/MountainGod2/homepage_config/assets/88257202/d0157ecf-f4c7-4a57-aa8c-762b41e08591)
+![Homepage Example](https://github.com/user-attachments/assets/c268e3ee-75f4-4e6e-977b-8065de17f55f)
 
 ---
 
