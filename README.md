@@ -1,104 +1,124 @@
-# Homepage Configs
+# Homepage Config
 
-  Personal collection of example config files for [benphelps/homepage](https://github.com/benphelps/homepage/)
-  
-# Services.yaml
-  There are two versions of the services configuration file in this repository.
+A personal collection of example configuration files for [gethomepage/homepage](https://github.com/gethomepage/homepage/). These examples demonstrate how to configure and customize Homepage using environment variables, Docker, and custom themes.
 
-  The first is a sanitized version using standard keys:
-  
-  [`services.yaml`](https://github.com/MountainGod2/homepage-config/blob/main/services.yaml)
+## Getting Started
 
-  While the second uses IP / key substitutions from environment variables used in the homepage container creation:
-  
-  [`services-env.yaml`](https://github.com/MountainGod2/homepage-config/blob/main/services-env.yaml)
+### Prerequisites
 
-  Example docker run command using standard config files:
-```yaml
+Before using these configurations, ensure you have the following:
+
+- **Docker** installed on your system ([Install Docker](https://docs.docker.com/get-docker/)).
+- A user-defined Docker network, such as `dsn` (create one with `docker network create dsn`).
+- A `.env.homepage` file with required environment variables.
+
+### Setup
+
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/MountainGod2/homepage_config.git
+   cd homepage_config
+   ```
+
+2. Create a `.env.homepage` file in the appropriate directory. Example:
+   ```env
+   HOMEPAGE_VAR_SERVER_IP=192.168.0.100
+   HOMEPAGE_VAR_DOMAIN_NAME=example.com
+   HOMEPAGE_VAR_CLOUDFLARE_ACCOUNT_ID=XXXX
+   ```
+
+3. Run the Docker container using the provided commands.
+
+---
+
+## Configuration Examples
+
+### Docker Run Command
+
+#### Using a `.env.homepage` File
+
+```bash
 docker run \
   -d \
   --name='homepage' \
-  --net='dsn' \ # user-defined bridge network to refer to containers by hostname instead of IP
+  --net='dsn' \
+  --env-file /path/to/homepage/.secrets/.env.homepage \
   -e TZ="America/Denver" \
-  -v '/mnt/':'/mnt':'ro' \ # read-only volume mount
-  -v '/mnt/user/appdata/homepage/config':'/app/config':'rw' \
-  -v '/mnt/user/appdata/homepage/images/':'/app/public/images':'rw' \
-  -v '/mnt/user/appdata/homepage/icons/':'/app/public/icons':'rw' \
   -p '3000:3000/tcp' \
-'ghcr.io/benphelps/homepage'
+  -v '/path/to/homepage/config:/app/config:rw' \
+  -v '/path/to/homepage/icons:/app/icons:rw' \  # Optional mount for local icons
+  -v '/path/to/homepage/images:/app/images:rw' \  # Option mount for local background images  
+  -v '/mnt/':'/mnt':'ro' \  # Optional mount for local disk statistics
+  'ghcr.io/gethomepage/homepage:latest'
 ```
 
-  Example docker run command using environment label substitutions:
-```yaml
+#### Setting Environment Variables Inline
+
+```bash
 docker run \
   -d \
   --name='homepage' \
-  --net='dsn' \ # user-defined bridge network to refer to containers by hostname instead of IP
-  -e TZ="America/Denver" \
-  -e 'HOMEPAGE_VAR_ROUTER_IP'='192.168.0.1' \
-  -e 'HOMEPAGE_VAR_SERVER_IP'='192.168.0.100' \
-  -e 'HOMEPAGE_VAR_CLOUDFLARE_ACCOUNT_ID'='XXXXX' \
-  -e 'HOMEPAGE_VAR_CLOUDFLARE_TUNNEL_ID'='XXXXX' \
-  -e 'HOMEPAGE_VAR_CLOUDFLARE_TUNNEL_API_KEY'='XXXXX' \
-  -e 'HOMEPAGE_VAR_TAILSCALE_DEVICE_ID'='XXXXX' \
-  -e 'HOMEPAGE_VAR_TAILSCALE_API_KEY'='tskey-api-XXXXX' \
-  -e 'HOMEPAGE_VAR_OVERSEERR_API_KEY'='XXXXX' \
-  -e 'HOMEPAGE_VAR_QBITTORRENT_UN'='XXXXX' \
-  -e 'HOMEPAGE_VAR_QBITTORRENT_PW'='XXXXX' \
-  -e 'HOMEPAGE_VAR_SABNZBD_API_KEY'='XXXXX' \
-  -e 'HOMEPAGE_VAR_PLEX_API_KEY'='XXXXX' \
-  -e 'HOMEPAGE_VAR_TAUTULLI_API_KEY'='XXXXX' \
-  -e 'HOMEPAGE_VAR_RADARR_API_KEY'='XXXXX' \
-  -e 'HOMEPAGE_VAR_RADARR4K_API_KEY'='XXXXX' \
-  -e 'HOMEPAGE_VAR_SONARR_API_KEY'='XXXXX' \
-  -e 'HOMEPAGE_VAR_BAZARR_API_KEY'='XXXXX' \
-  -e 'HOMEPAGE_VAR_PROWLARR_API_KEY'='XXXXX' \
-  -e 'HOMEPAGE_VAR_OPNSENSE_UN'='XXXXX' \
-  -e 'HOMEPAGE_VAR_OPNSENSE_PW'='XXXXX' \
-  -e 'HOMEPAGE_VAR_ADGUARD_UN'='XXXXX' \
-  -e 'HOMEPAGE_VAR_ADGUARD_PW'='XXXXX' \
-  -e 'HOMEPAGE_VAR_HOMEASSISTANT_LLAT'='XXXXX' \
-  -v '/mnt/':'/mnt':'ro' \ # read-only volume mount
-  -v '/mnt/user/appdata/homepage/config':'/app/config':'rw' \
-  -v '/mnt/user/appdata/homepage/images/':'/app/public/images':'rw' \
-  -v '/mnt/user/appdata/homepage/icons/':'/app/public/icons':'rw' \
+  --net='dsn' \
+  -e 'HOMEPAGE_VAR_SERVER_IP=192.168.0.100' \
+  -e 'HOMEPAGE_VAR_DOMAIN_NAME=example.com' \
+  -e 'HOMEPAGE_VAR_CLOUDFLARE_ACCOUNT_ID=XXXX' \
   -p '3000:3000/tcp' \
-'ghcr.io/benphelps/homepage'
+  -v '/path/to/homepage/config:/app/config:rw' \
+  -v '/path/to/homepage/icons:/app/icons:rw' \  # Optional mount for local icons
+  -v '/path/to/homepage/images:/app/images:rw' \  # Option mount for local background images  
+  -v '/mnt/':'/mnt':'ro' \  # Optional mount for local disk statistics
+  'ghcr.io/gethomepage/homepage:latest'
 ```
 
-# Custom CSS Themes
+### Environment Variables
 
-  Also included is [`customtheme.css`](https://github.com/MountainGod2/homepage-config/blob/main/customtheme.css) showing how to customize the colours further.
-  
-  The easiest method is likely either via a browser extension such as Stylus, or by using a subfilter module in Nginx (or similar).
+Here is a list of key environment variables and their purposes:
 
-  Ex.
+| Variable                             | Description                            |
+|--------------------------------------|----------------------------------------|
+| `HOMEPAGE_VAR_SERVER_IP`             | The IP address of the server.          |
+| `HOMEPAGE_VAR_DOMAIN_NAME`           | The domain name for the services.      |
+| `HOMEPAGE_VAR_CLOUDFLARE_ACCOUNT_ID` | Cloudflare account ID for integration. |
+| `HOMEPAGE_VAR_TAILSCALE_API_KEY`     | API key for Tailscale integration.     |
+| ...                                  | ...                                    |
 
-![homepage_stylus](https://github.com/MountainGod2/homepage_config/assets/88257202/531d0bc7-f6d4-4045-8f01-f3db13a4f874)
+---
 
-  or 
+## Custom Theme
 
-```nginx
-server {
-# ...
-    location / {
-        proxy_set_header Accept-Encoding "";
-        sub_filter
-        '</head>'
-        '<link rel="stylesheet" type="text/css" href="https://www.domain.com/customtheme.css">
-        </head>';
-        sub_filter_once on;
+A custom Dracula theme is included in this repository. To enable it:
 
-        proxy_pass http://host.ip:3000;
-```
+1. Copy `config/custom.css` to your `config` directory.
+2. Update your `settings.yaml` to include:
+   ```yaml
+   theme: dark
+   color: gray
+   background: /images/dracula-solid.png
+   ```
 
+For more themes, check [homepage-dracula](https://github.com/Jas-SinghFSU/homepage-dracula).
 
+---
 
+## Screenshots
 
-  # Screenshots
+![Homepage Example](https://github.com/user-attachments/assets/c268e3ee-75f4-4e6e-977b-8065de17f55f)
 
-  With `fiveColumns: true` in settings.yaml
-  
-![homepage_dracula](https://github.com/MountainGod2/homepage_config/assets/88257202/d0157ecf-f4c7-4a57-aa8c-762b41e08591)
+---
 
-![homepage_ibracorp](https://github.com/MountainGod2/homepage_config/assets/88257202/4abcea11-22e8-46e0-bc33-56e6bec8af21)
+## Credits
+
+- Dracula Theme by [Jas-SinghFSU](https://github.com/Jas-SinghFSU/homepage-dracula)
+- Homepage Dashboard by [gethomepage](https://github.com/gethomepage/homepage)
+
+---
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request for improvements or additional configurations.
+
+---
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.

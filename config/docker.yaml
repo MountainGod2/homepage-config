@@ -1,0 +1,12 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/docker/
+
+my-docker:  # Name of the docker configuration to use in `services.yaml`
+  host: dockersocket
+  port: 2375
+
+
+# To use local docker socket, you can use the following configuration:
+# my-docker:
+#   socket: /var/run/docker.sock  # Path to the docker socket (Ensure it is mounted in the container)
