@@ -1,0 +1,219 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/services/ and https://gethomepage.dev/configs/service-widgets/
+
+- Calendar:
+    - Calendar:
+        name: Calendar
+        widget:
+          type: calendar
+          view: agenda
+          maxEvents: 6  # Limit shown events to a maximum of 6
+          firstDayInWeek: sunday
+          integrations:
+            - type: sonarr
+              service_group: Management  # Exact name of group where service is located
+              service_name: Sonarr  # Exact name of service to use for widget
+            - type: radarr
+              service_group: Management
+              service_name: Radarr
+    - UrBackup:
+        name: Backups
+        href: https://urbackupui.{{HOMEPAGE_VAR_DOMAIN_NAME}}/  # Replacing with values from `/homepage/.secrets/.env.homepage`
+        widget:
+          type: urbackup
+          username: {{HOMEPAGE_VAR_URBACKUP_USERNAME}}
+          password: {{HOMEPAGE_VAR_URBACKUP_PASSWORD}}
+          url: http://{{HOMEPAGE_VAR_SERVER_IP}}:55414  # IF using IP instead of hostname, ensure you use the external port as well
+          maxDays: 5
+    - Docker:
+        widget:
+          type: customapi
+          url: http://dockersocket:2375/info
+          mappings:
+            - field: ContainersRunning
+              label: Running
+              format: number
+            - field: ContainersStopped
+              label: Stopped
+              format: number
+            - field: Containers
+              label: Total
+              format: number
+            - field: Images
+              label: Images
+              format: number
+- Management:
+    - Radarr:
+        href: https://radarr.{{HOMEPAGE_VAR_DOMAIN_NAME}}/  # Reverse proxy routes to the program defined (DNS rewrites redirect to the IP directly when local)
+        server: my-docker
+        container: radarr
+        widget:
+          type: radarr
+          url: http://radarr:7878  # When using the container name as the hostname, you can use the internal port as well
+          key:
+            {{HOMEPAGE_VAR_RADARR_API_KEY}}
+    - Sonarr:
+        href: https://sonarr.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
+        server: my-docker
+        container: sonarr
+        widget:
+          type: sonarr
+          url: http://sonarr:8989
+          key:
+            {{HOMEPAGE_VAR_SONARR_API_KEY}}
+    - Bazarr:
+        href: https://bazarr.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
+        server: my-docker
+        container: radarr
+        widget:
+          type: bazarr
+          url: http://bazarr:6767
+          key:
+            {{HOMEPAGE_VAR_BAZARR_API_KEY}}
+    - Overseerr:
+        href: https://request.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
+        server: my-docker
+        container: overseerr
+        widget:
+          type: overseerr
+          url: http://overseerr:5055
+          key:
+            {{HOMEPAGE_VAR_OVERSEERR_API_KEY}}
+- Downloads:
+    - OPNSense:
+        href: https://opnsense.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
+        ping: https://{{HOMEPAGE_VAR_ROUTER_IP}}/
+        widget:
+          type: opnsense
+          url: https://{{HOMEPAGE_VAR_ROUTER_IP}}
+          fields:
+            - wanUpload
+            - wanDownload
+          username:
+            {{HOMEPAGE_VAR_OPNSENSE_USERNAME}}
+          password:
+            {{HOMEPAGE_VAR_OPNSENSE_PASSWORD}}
+    - Prowlarr:
+        href: https://prowlarr.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
+        server: my-docker
+        container: prowlarr
+        widget:
+          type: prowlarr
+          fields:
+            - numberOfGrabs
+            - numberOfQueries
+            - numberOfFailGrabs
+          url: http://prowlarr:9696
+          key:
+            {{HOMEPAGE_VAR_PROWLARR_API_KEY}}
+    - Sabnzbd:
+        href: https://sabnzbd.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
+        server: my-docker
+        container: sabnzbd
+        widget:
+          type: sabnzbd
+          url: http://sabnzbd:8080
+          key:
+            {{HOMEPAGE_VAR_SABNZBD_API_KEY}}
+    - QbittorrentVPN:
+        href: https://qbittorrent.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
+        server: my-docker
+        container: qbittorrentvpn
+        widget:
+          type: qbittorrent
+          url: http://qbittorrentvpn:8081
+          username:
+            {{HOMEPAGE_VAR_QBITTORRENT_USERNAME}}
+          password:
+            {{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}
+- Media:
+    - Crowdsec:
+        href: https://app.crowdsec.net/security-engines/
+        widget:
+          type: crowdsec
+          url: http://crowdsec:8080
+          username: {{HOMEPAGE_VAR_CROWDSEC_USERNAME}}
+          password: {{HOMEPAGE_VAR_CROWDSEC_PASSWORD}}
+    - Plex:
+        href: https://plex.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
+        server: my-docker
+        container: plex
+        widget:
+          type: plex
+          fields:
+            - movies
+            - tv
+          url: http://plex:32400
+          key:
+            {{HOMEPAGE_VAR_PLEX_API_KEY}}
+    - Tautulli:
+        href: https://tautulli.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
+        server: my-docker
+        container: tautulli
+        widget:
+          type: tautulli
+          url: http://tautulli:8181
+          key:
+            {{HOMEPAGE_VAR_TAUTULLI_API_KEY}}
+    - Speedtest:
+        href: https://speedtest.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
+        server: my-docker
+        container: speedtest-tracker
+        widget:
+          type: speedtest
+          url: http://speedtest-tracker
+- Network:
+    - Cloudflare:
+        href: https://dash.cloudflare.com/
+        server: my-docker
+        container: cloudflared
+        widget:
+          type: cloudflared
+          accountid:
+            {{HOMEPAGE_VAR_CLOUDFLARE_ACCOUNT_ID}}
+          tunnelid:
+            {{HOMEPAGE_VAR_CLOUDFLARE_TUNNEL_ID}}
+          key:
+            {{HOMEPAGE_VAR_CLOUDFLARE_TUNNEL_API_KEY}}
+    - Adguard:
+        href: http://{{HOMEPAGE_VAR_ROUTER_IP}}:81/
+        ping: http://{{HOMEPAGE_VAR_ROUTER_IP}}:81/
+        statusStyle: basic  # Use `up` style status for non-docker widgets (instead of default `ping`)
+        widget:
+          type: adguard
+          url: http://{{HOMEPAGE_VAR_ROUTER_IP}}:81
+          username:
+            {{HOMEPAGE_VAR_ADGUARD_USERNAME}}
+          password:
+            {{HOMEPAGE_VAR_ADGUARD_PASSWORD}}
+          fields:
+            - queries
+            - blocked
+            - latency
+    - Tailscale:
+        href: https://login.tailscale.com/admin/machines
+        ping: https://{{HOMEPAGE_VAR_ROUTER_IP}}/
+        statusStyle: basic
+        widget:
+          type: tailscale
+          deviceid:
+            {{HOMEPAGE_VAR_TAILSCALE_DEVICE_ID}}
+          key:
+            {{HOMEPAGE_VAR_TAILSCALE_API_KEY}}
+    - Car Status:
+        href: https://homeassistant.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
+        server: my-docker
+        container: homeassistant
+        widget:
+          type: homeassistant
+          url: http://{{HOMEPAGE_VAR_SERVER_IP}}:8123
+          key:
+            {{HOMEPAGE_VAR_HOMEASSISTANT_LLAT}}
+          custom:  # Home Assistant templates (https://my.home-assistant.io/redirect/developer_template/)
+            - template: "{{ states.device_tracker.forte5_location.state | capitalize }}"  # Display current state capitalized
+              label: Location
+            - template: "{{ states.lock.forte5_door_lock.state | capitalize }}"
+              label: Doors
+            - template: "{{ states.sensor.forte5_car_battery_level.state | int }}%"  # Display current state as an integer with a `%` suffix
+              label: Battery

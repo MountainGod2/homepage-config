@@ -1,0 +1,67 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/widgets/
+
+- resources:
+    cpu: true
+    memory: true
+    expanded: true
+    refresh: 5000
+    label: System
+    disk:  # Ensure drive paths are mounted in the container
+      - /mnt/cache  # Cache drive
+
+- resources:
+    expanded: true
+    refresh: 5000
+    label: Array
+    disk:
+      - /mnt/user0  # Array total
+
+- resources:
+    expanded: true
+    refresh: 5000
+    label: Disks
+    disk:
+      - /mnt/disk1  # Individual disks
+      - /mnt/disk2
+      - /mnt/disk3
+      - /mnt/disk4
+
+- openweathermap:
+    label: Calgary, AB
+    units: metric
+    provider: openweathermap
+    cache: 10
+
+- datetime:
+    text_size: sm
+    format:
+      dateStyle: short
+      timeStyle: short
+      hour12: true
+      timeZone: 'America/Edmonton'
+
+# - logo:
+    # icon: https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/I_Love_New_York.svg/1101px-I_Love_New_York.svg.png # optional
+    
+# - glances:
+    # url: http://{{HOMEPAGE_VAR_SERVER_IP}}:61208
+    # expanded: true
+    # label: Glances
+
+
+# - stocks:
+    # provider: finnhub
+    # watchlist:
+      # - GME
+      # - AMC
+      # - NVDA
+      # - AMD
+      # - TSM
+      # - MSFT
+      # - AAPL
+      # - BRK.A
+
+# - search:
+    # provider: google

@@ -1,0 +1,21 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/bookmarks/
+
+- Bookmarks:
+
+    - Unraid:
+        - href: http://{{HOMEPAGE_VAR_SERVER_IP}}:81/  # Either 2 and 4 tab spacing work
+          abbr: UR
+
+    - Code-server:
+      - href: https://code-server.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
+        abbr: CD
+
+    - Github:
+      - href: https://github.com/
+        abbr: GH
+
+    - YouTube:
+        - href: https://youtube.com/
+          abbr: YT
