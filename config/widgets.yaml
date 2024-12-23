@@ -44,7 +44,7 @@
 
 # - logo:
     # icon: https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/I_Love_New_York.svg/1101px-I_Love_New_York.svg.png # optional
-    
+
 # - glances:
     # url: http://{{HOMEPAGE_VAR_SERVER_IP}}:61208
     # expanded: true

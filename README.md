@@ -47,7 +47,7 @@ docker run \
   -p '3000:3000/tcp' \
   -v '/path/to/homepage/config:/app/config:rw' \
   -v '/path/to/homepage/icons:/app/icons:rw' \  # Optional mount for local icons
-  -v '/path/to/homepage/images:/app/images:rw' \  # Option mount for local background images  
+  -v '/path/to/homepage/images:/app/images:rw' \  # Option mount for local background images
   -v '/mnt/':'/mnt':'ro' \  # Optional mount for local disk statistics
   'ghcr.io/gethomepage/homepage:latest'
 ```
@@ -65,7 +65,7 @@ docker run \
   -p '3000:3000/tcp' \
   -v '/path/to/homepage/config:/app/config:rw' \
   -v '/path/to/homepage/icons:/app/icons:rw' \  # Optional mount for local icons
-  -v '/path/to/homepage/images:/app/images:rw' \  # Option mount for local background images  
+  -v '/path/to/homepage/images:/app/images:rw' \  # Option mount for local background images
   -v '/mnt/':'/mnt':'ro' \  # Optional mount for local disk statistics
   'ghcr.io/gethomepage/homepage:latest'
 ```
