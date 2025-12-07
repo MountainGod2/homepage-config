@@ -1,20 +1,17 @@
 ---
-# For configuration options and examples, please see:
-# https://gethomepage.dev/configs/bookmarks/
-
 - Bookmarks:
-
     - Unraid:
-        - href: http://{{HOMEPAGE_VAR_SERVER_IP}}:81/  # Either 2 and 4 tab spacing work
+        - href: https://mercury.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
+          # icon: /icons/example.ico  # Path relative to Homepage's config directory
           abbr: UR
 
     - Code-server:
-      - href: https://code-server.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
-        abbr: CD
+        - href: https://code-server.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
+          abbr: CD
 
     - Github:
-      - href: https://github.com/
-        abbr: GH
+        - href: https://github.com/
+          abbr: GH
 
     - YouTube:
         - href: https://youtube.com/
