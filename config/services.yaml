@@ -1,31 +1,26 @@
 ---
-# For configuration options and examples, please see:
-# https://gethomepage.dev/configs/services/ and https://gethomepage.dev/configs/service-widgets/
-
 - Calendar:
-    - Calendar:
-        name: Calendar
+    - Unraid:
+        name: Unraid
+        href: https://mercury.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
+        siteMonitor: https://mercury.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
+        statusStyle: basic
         widget:
-          type: calendar
-          view: agenda
-          maxEvents: 6  # Limit shown events to a maximum of 6
-          firstDayInWeek: sunday
-          integrations:
-            - type: sonarr
-              service_group: Management  # Exact name of group where service is located
-              service_name: Sonarr  # Exact name of service to use for widget
-            - type: radarr
-              service_group: Management
-              service_name: Radarr
+          type: unraid
+          url: https://mercury.{{HOMEPAGE_VAR_DOMAIN_NAME}}
+          key: {{HOMEPAGE_VAR_UNRAID_API_KEY}}
+          fields: ["status", "notifications", "arrayFree"]
+
     - UrBackup:
         name: Backups
-        href: https://urbackupui.{{HOMEPAGE_VAR_DOMAIN_NAME}}/  # Replacing with values from `/homepage/.secrets/.env.homepage`
+        href: https://urbackupui.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
         widget:
           type: urbackup
+          url: http://urbackup:55414  # Uses Docker DNS - requires same Docker network
           username: {{HOMEPAGE_VAR_URBACKUP_USERNAME}}
           password: {{HOMEPAGE_VAR_URBACKUP_PASSWORD}}
-          url: http://{{HOMEPAGE_VAR_SERVER_IP}}:55414  # IF using IP instead of hostname, ensure you use the external port as well
           maxDays: 5
+
     - Docker:
         widget:
           type: customapi
@@ -43,16 +38,26 @@
             - field: Images
               label: Images
               format: number
+
+    - Tailscale:
+        href: https://login.tailscale.com/admin/machines
+        ping: https://{{HOMEPAGE_VAR_ROUTER_IP}}/
+        statusStyle: basic
+        widget:
+          type: tailscale
+          deviceid: {{HOMEPAGE_VAR_TAILSCALE_DEVICE_ID}}
+          key: {{HOMEPAGE_VAR_TAILSCALE_API_KEY}}
+
 - Management:
     - Radarr:
-        href: https://radarr.{{HOMEPAGE_VAR_DOMAIN_NAME}}/  # Reverse proxy routes to the program defined (DNS rewrites redirect to the IP directly when local)
+        href: https://radarr.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
         server: my-docker
         container: radarr
         widget:
           type: radarr
-          url: http://radarr:7878  # When using the container name as the hostname, you can use the internal port as well
-          key:
-            {{HOMEPAGE_VAR_RADARR_API_KEY}}
+          url: http://radarr:7878
+          key: {{HOMEPAGE_VAR_RADARR_API_KEY}}
+
     - Sonarr:
         href: https://sonarr.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
         server: my-docker
@@ -60,17 +65,17 @@
         widget:
           type: sonarr
           url: http://sonarr:8989
-          key:
-            {{HOMEPAGE_VAR_SONARR_API_KEY}}
+          key: {{HOMEPAGE_VAR_SONARR_API_KEY}}
+
     - Bazarr:
         href: https://bazarr.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
         server: my-docker
-        container: radarr
+        container: bazarr
         widget:
           type: bazarr
           url: http://bazarr:6767
-          key:
-            {{HOMEPAGE_VAR_BAZARR_API_KEY}}
+          key: {{HOMEPAGE_VAR_BAZARR_API_KEY}}
+
     - Overseerr:
         href: https://request.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
         server: my-docker
@@ -78,8 +83,8 @@
         widget:
           type: overseerr
           url: http://overseerr:5055
-          key:
-            {{HOMEPAGE_VAR_OVERSEERR_API_KEY}}
+          key: {{HOMEPAGE_VAR_OVERSEERR_API_KEY}}
+
 - Downloads:
     - OPNSense:
         href: https://opnsense.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
@@ -90,10 +95,9 @@
           fields:
             - wanUpload
             - wanDownload
-          username:
-            {{HOMEPAGE_VAR_OPNSENSE_USERNAME}}
-          password:
-            {{HOMEPAGE_VAR_OPNSENSE_PASSWORD}}
+          username: {{HOMEPAGE_VAR_OPNSENSE_USERNAME}}
+          password: {{HOMEPAGE_VAR_OPNSENSE_PASSWORD}}
+
     - Prowlarr:
         href: https://prowlarr.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
         server: my-docker
@@ -105,8 +109,8 @@
             - numberOfQueries
             - numberOfFailGrabs
           url: http://prowlarr:9696
-          key:
-            {{HOMEPAGE_VAR_PROWLARR_API_KEY}}
+          key: {{HOMEPAGE_VAR_PROWLARR_API_KEY}}
+
     - Sabnzbd:
         href: https://sabnzbd.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
         server: my-docker
@@ -114,8 +118,8 @@
         widget:
           type: sabnzbd
           url: http://sabnzbd:8080
-          key:
-            {{HOMEPAGE_VAR_SABNZBD_API_KEY}}
+          key: {{HOMEPAGE_VAR_SABNZBD_API_KEY}}
+
     - QbittorrentVPN:
         href: https://qbittorrent.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
         server: my-docker
@@ -123,10 +127,9 @@
         widget:
           type: qbittorrent
           url: http://qbittorrentvpn:8081
-          username:
-            {{HOMEPAGE_VAR_QBITTORRENT_USERNAME}}
-          password:
-            {{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}
+          username: {{HOMEPAGE_VAR_QBITTORRENT_USERNAME}}
+          password: {{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}
+
 - Media:
     - Crowdsec:
         href: https://app.crowdsec.net/security-engines/
@@ -135,18 +138,18 @@
           url: http://crowdsec:8080
           username: {{HOMEPAGE_VAR_CROWDSEC_USERNAME}}
           password: {{HOMEPAGE_VAR_CROWDSEC_PASSWORD}}
+          limit24h: true  # Without this, shows all-time stats which can be misleadingly high
+
     - Plex:
         href: https://plex.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
         server: my-docker
         container: plex
         widget:
           type: plex
-          fields:
-            - movies
-            - tv
+          fields: ["movies", "tv"]
           url: http://plex:32400
-          key:
-            {{HOMEPAGE_VAR_PLEX_API_KEY}}
+          key: {{HOMEPAGE_VAR_PLEX_API_KEY}}
+
     - Tautulli:
         href: https://tautulli.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
         server: my-docker
@@ -154,8 +157,8 @@
         widget:
           type: tautulli
           url: http://tautulli:8181
-          key:
-            {{HOMEPAGE_VAR_TAUTULLI_API_KEY}}
+          key: {{HOMEPAGE_VAR_TAUTULLI_API_KEY}}
+
     - Speedtest:
         href: https://speedtest.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
         server: my-docker
@@ -163,6 +166,7 @@
         widget:
           type: speedtest
           url: http://speedtest-tracker
+
 - Network:
     - Cloudflare:
         href: https://dash.cloudflare.com/
@@ -170,50 +174,112 @@
         container: cloudflared
         widget:
           type: cloudflared
-          accountid:
-            {{HOMEPAGE_VAR_CLOUDFLARE_ACCOUNT_ID}}
-          tunnelid:
-            {{HOMEPAGE_VAR_CLOUDFLARE_TUNNEL_ID}}
-          key:
-            {{HOMEPAGE_VAR_CLOUDFLARE_TUNNEL_API_KEY}}
+          accountid: {{HOMEPAGE_VAR_CLOUDFLARE_ACCOUNT_ID}}
+          tunnelid: {{HOMEPAGE_VAR_CLOUDFLARE_TUNNEL_ID}}
+          key: {{HOMEPAGE_VAR_CLOUDFLARE_TUNNEL_API_KEY}}
+
     - Adguard:
         href: http://{{HOMEPAGE_VAR_ROUTER_IP}}:81/
         ping: http://{{HOMEPAGE_VAR_ROUTER_IP}}:81/
-        statusStyle: basic  # Use `up` style status for non-docker widgets (instead of default `ping`)
+        statusStyle: basic  # Required for ping-based status; 'server' + 'container' won't work for non-Docker services
         widget:
           type: adguard
           url: http://{{HOMEPAGE_VAR_ROUTER_IP}}:81
-          username:
-            {{HOMEPAGE_VAR_ADGUARD_USERNAME}}
-          password:
-            {{HOMEPAGE_VAR_ADGUARD_PASSWORD}}
+          username: {{HOMEPAGE_VAR_ADGUARD_USERNAME}}
+          password: {{HOMEPAGE_VAR_ADGUARD_PASSWORD}}
           fields:
             - queries
             - blocked
             - latency
-    - Tailscale:
-        href: https://login.tailscale.com/admin/machines
-        ping: https://{{HOMEPAGE_VAR_ROUTER_IP}}/
-        statusStyle: basic
-        widget:
-          type: tailscale
-          deviceid:
-            {{HOMEPAGE_VAR_TAILSCALE_DEVICE_ID}}
-          key:
-            {{HOMEPAGE_VAR_TAILSCALE_API_KEY}}
+
     - Car Status:
         href: https://homeassistant.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
         server: my-docker
         container: homeassistant
         widget:
           type: homeassistant
-          url: http://{{HOMEPAGE_VAR_SERVER_IP}}:8123
-          key:
-            {{HOMEPAGE_VAR_HOMEASSISTANT_LLAT}}
-          custom:  # Home Assistant templates (https://my.home-assistant.io/redirect/developer_template/)
-            - template: "{{ states.device_tracker.forte5_location.state | capitalize }}"  # Display current state capitalized
+          url: http://homeassistant:8123
+          key: {{HOMEPAGE_VAR_HOMEASSISTANT_LLAT}}
+          custom:
+            - template: >-
+                {{ states.device_tracker.forte5_location.state | default('Unknown') | capitalize }}
               label: Location
-            - template: "{{ states.lock.forte5_door_lock.state | capitalize }}"
+            - template: >-
+                {{ 'Closed' if is_state('binary_sensor.forte5_doors', 'off')
+                else 'Open' if is_state('binary_sensor.forte5_doors', 'on')
+                else states('binary_sensor.forte5_doors') | default('Unknown') | capitalize }}
               label: Doors
-            - template: "{{ states.sensor.forte5_car_battery_level.state | int }}%"  # Display current state as an integer with a `%` suffix
-              label: Battery
+            - template: "{{ states('sensor.forte5_car_battery_level') | int(0) }}%"
+              label: Battery  # int(0) fallback prevents 'unavailable' text when car is off
+
+    - Hockey:
+        href: https://homeassistant.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
+        server: my-docker
+        container: homeassistant
+        widget:
+          type: homeassistant
+          url: http://homeassistant:8123
+          key: {{HOMEPAGE_VAR_HOMEASSISTANT_LLAT}}
+          custom:
+            - label: Game
+              template: >-
+                {%- set sensor = 'sensor.team_tracker' -%}
+                {%- set home = (state_attr(sensor, 'team_abbr') or state_attr(sensor, 'team_name') or '') | upper -%}
+                {%- set away = (state_attr(sensor, 'opponent_abbr') or state_attr(sensor, 'opponent_name') or '') | upper -%}
+                {%- set event = state_attr(sensor, 'event_name') | default('', true) -%}
+                {%- if event -%}
+                  {{ event }}
+                {%- elif home or away -%}
+                  {{ home }}{{ ' @ ' if home and away else '' }}{{ away }}
+                {%- else -%}
+                  Unknown
+                {%- endif -%}
+            - label: Score
+              template: >-
+                {%- set sensor = 'sensor.team_tracker' -%}
+                {%- set status = (states(sensor) | default('Unknown', true)) | string -%}
+                {%- set home_score = state_attr(sensor, 'team_score') -%}
+                {%- set away_score = state_attr(sensor, 'opponent_score') -%}
+                {%- if status == 'PRE' -%}
+                  TBD
+                {%- elif home_score is not none and away_score is not none -%}
+                  {{ home_score | int }}-{{ away_score | int }}
+                {%- else -%}
+                  Unknown
+                {%- endif -%}
+            - label: Status
+              template: >-
+                {%- set sensor = 'sensor.team_tracker' -%}
+                {%- set status = (states(sensor) | default('Unknown', true)) | string -%}
+                {%- set kickoff = state_attr(sensor, 'kickoff_in') | default('', true) -%}
+                {%- set game_date_str = state_attr(sensor, 'date') -%}
+                {%- set game_dt = game_date_str | as_datetime -%}
+                {%- set period = state_attr(sensor, 'quarter') | default('', true) -%}
+                {%- set clock = state_attr(sensor, 'clock') | default('', true) -%}
+                {%- if status == 'PRE' -%}
+                  {%- if kickoff -%}
+                    {{ kickoff[0:1].upper() ~ kickoff[1:] }}
+                  {%- elif game_dt is not none -%}
+                    {%- set today = now().date() -%}
+                    {%- set game_date = game_dt.date() -%}
+                    {%- if game_date == today -%}
+                      Today {{ game_dt.strftime('%I:%M %p') }}
+                    {%- elif game_date == (today + timedelta(days=1)) -%}
+                      Tomorrow {{ game_dt.strftime('%I:%M %p') }}
+                    {%- else -%}
+                      {{ game_dt.strftime('%b %-d, %I:%M %p') }}
+                    {%- endif -%}
+                  {%- else -%}
+                    TBD
+                  {%- endif -%}
+                {%- elif status == 'IN' -%}
+                  {%- if period or clock -%}
+                    {{ ('P' ~ period ~ ' ') ~ clock }}
+                  {%- else -%}
+                    Live
+                  {%- endif -%}
+                {%- elif status == 'POST' -%}
+                  Final
+                {%- else -%}
+                  {{ status[0:1].upper() ~ status[1:] }}
+                {%- endif -%}
