@@ -1,31 +1,48 @@
 ---
-# For configuration options and examples, please see:
-# https://gethomepage.dev/configs/settings/
-
 layout:
   Calendar:
     header: false
+    style: column
+
   Management:
     header: false
+
   Downloads:
     header: false
+
   Media:
     header: false
+
   Network:
     header: false
+
   Bookmarks:
-    style: row  # Show bookmarks as a single row, but limit it to four coloums across
+    style: row  # 'row' combined with 'columns' creates a horizontal bookmark bar
     columns: 4
 
 fiveColumns: true
+
 useEqualHeights: true
 
 background: /images/dracula-solid.png
+
 theme: dark
-color: gray  # Set colour to gray to enable `dracula` theme from `custom.css` to be enabled by default
+
+# color: gray  # Must be 'gray' for custom.css Dracula theme - it targets .theme-gray selector
+
 cardBlur: xl
+
 headerStyle: clean
 
-providers:
-  finnhub: {{HOMEPAGE_VAR_FINNHUB_TOKEN}}
-  openweathermap: {{HOMEPAGE_VAR_OPENWEATHERMAP_TOKEN}}
+# providers:
+  # finnhub: {{HOMEPAGE_VAR_FINNHUB_TOKEN}}
+  # openweathermap: {{HOMEPAGE_VAR_OPENWEATHERMAP_TOKEN}}
+
+# favicon: icons/arrows.ico
+
+# quicklaunch:
+  # searchDescriptions: true
+  # hideInternetSearch: true
+  # showSearchSuggestions: true
+  # hideVisitURL: true
+  # provider: google
