@@ -102,14 +102,12 @@ For more themes, check [homepage-dracula](https://github.com/Jas-SinghFSU/homepa
 
 ## Screenshots
 
-![Homepage Example](https://github.com/user-attachments/assets/c268e3ee-75f4-4e6e-977b-8065de17f55f)
-
----
+![Homepage Example](https://github.com/user-attachments/assets/ec8cd555-0528-4c93-a795-ab5867f5134b)
 
 ## Credits
 
+- Homepage by the wonderful [gethomepage](https://github.com/gethomepage/homepage) team
 - Dracula Theme by [Jas-SinghFSU](https://github.com/Jas-SinghFSU/homepage-dracula)
-- Homepage Dashboard by [gethomepage](https://github.com/gethomepage/homepage)
 
 ---
 
