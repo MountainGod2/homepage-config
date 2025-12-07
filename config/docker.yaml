@@ -1,12 +1,8 @@
 ---
-# For configuration options and examples, please see:
-# https://gethomepage.dev/configs/docker/
-
-my-docker:  # Name of the docker configuration to use in `services.yaml`
-  host: dockersocket
+my-docker:  # Referenced by 'server: my-docker' in services.yaml
+  host: dockersocket  # Using docker-socket-proxy for security instead of exposing socket directly
   port: 2375
 
-
-# To use local docker socket, you can use the following configuration:
+# Direct socket access (less secure - grants full Docker API access):
 # my-docker:
-#   socket: /var/run/docker.sock  # Path to the docker socket (Ensure it is mounted in the container)
+#   socket: /var/run/docker.sock
