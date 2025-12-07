@@ -9,7 +9,7 @@ A personal collection of example configuration files for [gethomepage/homepage](
 Before using these configurations, ensure you have the following:
 
 - **Docker** installed on your system ([Install Docker](https://docs.docker.com/get-docker/)).
-- A user-defined Docker network, such as `dsn` (create one with `docker network create dsn`).
+- A user-defined Docker network for your containers (create one with `docker network create my-network`).
 - A `.env.homepage` file with required environment variables.
 
 ### Setup
