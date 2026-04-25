@@ -1,4 +1,4 @@
 .env
-# .env.*
+.env.*
 *.env
-# .secrets/
+.secrets/
