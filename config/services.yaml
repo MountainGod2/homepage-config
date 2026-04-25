@@ -14,6 +14,8 @@
     - UrBackup:
         name: Backups
         href: https://urbackupui.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
+        server: my-docker
+        container: urbackup
         widget:
           type: urbackup
           url: http://urbackup:55414  # Uses Docker DNS - requires same Docker network
@@ -81,7 +83,7 @@
         server: my-docker
         container: overseerr
         widget:
-          type: overseerr
+          type: seerr
           url: http://overseerr:5055
           key: {{HOMEPAGE_VAR_OVERSEERR_API_KEY}}
 
@@ -91,7 +93,7 @@
         ping: https://{{HOMEPAGE_VAR_ROUTER_IP}}/
         widget:
           type: opnsense
-          url: https://{{HOMEPAGE_VAR_ROUTER_IP}}
+          url: https://{{HOMEPAGE_VAR_ROUTER_IP}}/
           fields:
             - wanUpload
             - wanDownload
@@ -133,6 +135,8 @@
 - Media:
     - Crowdsec:
         href: https://app.crowdsec.net/security-engines/
+        server: my-docker
+        container: crowdsec
         widget:
           type: crowdsec
           url: http://crowdsec:8080
@@ -205,12 +209,11 @@
                 {{ states.device_tracker.forte5_location.state | default('Unknown') | capitalize }}
               label: Location
             - template: >-
-                {{ 'Closed' if is_state('binary_sensor.forte5_doors', 'off')
-                else 'Open' if is_state('binary_sensor.forte5_doors', 'on')
-                else states('binary_sensor.forte5_doors') | default('Unknown') | capitalize }}
+                {{ states.lock.forte5_door_lock.state | default('Unknown') | capitalize }}
               label: Doors
-            - template: "{{ states('sensor.forte5_car_battery_level') | int(0) }}%"
-              label: Battery  # int(0) fallback prevents 'unavailable' text when car is off
+            - template: >-
+                {{ states.sensor.forte5_car_battery_level.state | default('0') }}%
+              label: Battery
 
     - Hockey:
         href: https://homeassistant.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
@@ -224,62 +227,89 @@
             - label: Game
               template: >-
                 {%- set sensor = 'sensor.team_tracker' -%}
-                {%- set home = (state_attr(sensor, 'team_abbr') or state_attr(sensor, 'team_name') or '') | upper -%}
-                {%- set away = (state_attr(sensor, 'opponent_abbr') or state_attr(sensor, 'opponent_name') or '') | upper -%}
-                {%- set event = state_attr(sensor, 'event_name') | default('', true) -%}
-                {%- if event -%}
+                {%- set home = (state_attr(sensor, 'team_abbr') or state_attr(sensor, 'team_name') or '') | string | upper | trim -%}
+                {%- set away = (state_attr(sensor, 'opponent_abbr') or state_attr(sensor, 'opponent_name') or '') | string | upper | trim -%}
+                {%- set event = state_attr(sensor, 'event_name') | default('', true) | string | trim -%}
+                {%- if event and event | length > 0 -%}
                   {{ event }}
-                {%- elif home or away -%}
-                  {{ home }}{{ ' @ ' if home and away else '' }}{{ away }}
+                {%- elif home | length > 0 or away | length > 0 -%}
+                  {{ home }}{{ ' @ ' if home | length > 0 and away | length > 0 else '' }}{{ away }}
                 {%- else -%}
                   Unknown
                 {%- endif -%}
+
             - label: Score
               template: >-
                 {%- set sensor = 'sensor.team_tracker' -%}
-                {%- set status = (states(sensor) | default('Unknown', true)) | string -%}
+                {%- set status = states(sensor) | default('', true) | string | upper | trim -%}
                 {%- set home_score = state_attr(sensor, 'team_score') -%}
                 {%- set away_score = state_attr(sensor, 'opponent_score') -%}
                 {%- if status == 'PRE' -%}
                   TBD
-                {%- elif home_score is not none and away_score is not none -%}
-                  {{ home_score | int }}-{{ away_score | int }}
+                {%- elif home_score is not none and away_score is not none
+                     and home_score | string | trim != ''
+                     and away_score | string | trim != '' -%}
+                  {%- set hs = home_score | int(-1) -%}
+                  {%- set as_ = away_score | int(-1) -%}
+                  {%- if hs >= 0 and as_ >= 0 -%}
+                    {{ hs }}-{{ as_ }}
+                  {%- else -%}
+                    –
+                  {%- endif -%}
+                {%- elif status == '' -%}
+                  Unavailable
                 {%- else -%}
-                  Unknown
+                  –
                 {%- endif -%}
+
             - label: Status
               template: >-
                 {%- set sensor = 'sensor.team_tracker' -%}
-                {%- set status = (states(sensor) | default('Unknown', true)) | string -%}
-                {%- set kickoff = state_attr(sensor, 'kickoff_in') | default('', true) -%}
-                {%- set game_date_str = state_attr(sensor, 'date') -%}
-                {%- set game_dt = game_date_str | as_datetime -%}
-                {%- set period = state_attr(sensor, 'quarter') | default('', true) -%}
-                {%- set clock = state_attr(sensor, 'clock') | default('', true) -%}
-                {%- if status == 'PRE' -%}
-                  {%- if kickoff -%}
-                    {{ kickoff[0:1].upper() ~ kickoff[1:] }}
-                  {%- elif game_dt is not none -%}
-                    {%- set today = now().date() -%}
-                    {%- set game_date = game_dt.date() -%}
-                    {%- if game_date == today -%}
-                      Today {{ game_dt.strftime('%I:%M %p') }}
-                    {%- elif game_date == (today + timedelta(days=1)) -%}
-                      Tomorrow {{ game_dt.strftime('%I:%M %p') }}
+                {%- set status = states(sensor) | default('', true) | string | upper | trim -%}
+                {%- set kickoff = state_attr(sensor, 'kickoff_in') | default('', true) | string | trim -%}
+                {%- set game_date_str = state_attr(sensor, 'date') | default('', true) | string | trim -%}
+                {%- set period = state_attr(sensor, 'quarter') | default('', true) | string | trim -%}
+                {%- set clock = state_attr(sensor, 'clock') | default('', true) | string | trim -%}
+
+                {%- if status == '' -%}
+                  Unavailable
+
+                {%- elif status == 'PRE' -%}
+                  {%- if kickoff | length > 0 -%}
+                    {{ kickoff | capitalize }}
+                  {%- elif game_date_str | length > 0 -%}
+                    {%- set game_dt = game_date_str | as_datetime -%}
+                    {%- if game_dt is not none -%}
+                      {%- set today = now().date() -%}
+                      {%- set game_date = game_dt.date() -%}
+                      {%- if game_date == today -%}
+                        Today {{ game_dt.strftime('%-I:%M %p') }}
+                      {%- elif game_date == (today + timedelta(days=1)) -%}
+                        Tomorrow {{ game_dt.strftime('%-I:%M %p') }}
+                      {%- else -%}
+                        {{ game_dt.strftime('%b %-d, %-I:%M %p') }}
+                      {%- endif -%}
                     {%- else -%}
-                      {{ game_dt.strftime('%b %-d, %I:%M %p') }}
+                      TBD
                     {%- endif -%}
                   {%- else -%}
                     TBD
                   {%- endif -%}
+
                 {%- elif status == 'IN' -%}
-                  {%- if period or clock -%}
-                    {{ ('P' ~ period ~ ' ') ~ clock }}
+                  {%- if period | length > 0 and clock | length > 0 -%}
+                    P{{ period }} {{ clock }}
+                  {%- elif period | length > 0 -%}
+                    P{{ period }}
+                  {%- elif clock | length > 0 -%}
+                    {{ clock }}
                   {%- else -%}
                     Live
                   {%- endif -%}
+
                 {%- elif status == 'POST' -%}
                   Final
+
                 {%- else -%}
-                  {{ status[0:1].upper() ~ status[1:] }}
+                  {{ status | capitalize }}
                 {%- endif -%}

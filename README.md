@@ -1,6 +1,6 @@
 # Homepage Config
 
-A personal collection of example configuration files for [gethomepage/homepage](https://github.com/gethomepage/homepage/). These examples demonstrate how to configure and customize Homepage using environment variables, Docker, and custom themes.
+My personal configuration files for [gethomepage/homepage](https://github.com/gethomepage/homepage/).
 
 ## Getting Started
 
@@ -106,17 +106,5 @@ For more themes, check [homepage-dracula](https://github.com/Jas-SinghFSU/homepa
 
 ## Credits
 
-- Homepage by the wonderful [gethomepage](https://github.com/gethomepage/homepage) team
+- [gethomepage](https://github.com/gethomepage/homepage)
 - Dracula Theme by [Jas-SinghFSU](https://github.com/Jas-SinghFSU/homepage-dracula)
-
----
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request for improvements or additional configurations.
-
----
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
