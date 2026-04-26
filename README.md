@@ -2,105 +2,83 @@
 
 My personal configuration files for [gethomepage/homepage](https://github.com/gethomepage/homepage/).
 
-## Getting Started
+## Setup
 
 ### Prerequisites
 
-- **Docker** installed on your system ([Install Docker](https://docs.docker.com/get-docker/)).
-- A user-defined Docker network for your containers (create one with `docker network create my-network`).
-- A `.env.homepage` file with required environment variables.
+- Docker and a user-defined Docker network (`docker network create my-network`)
+- A [docker-socket-proxy](https://github.com/Tecnativa/docker-socket-proxy) container on the same network (referenced as `dockersocket:2375` in `docker.yaml`)
+- A `.env.homepage` file with the required environment variables
 
-### Setup
-
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/MountainGod2/homepage_config.git
-   cd homepage_config
-   ```
-
-2. Create a `.env.homepage` file in the appropriate directory. Example:
-   ```env
-   HOMEPAGE_VAR_SERVER_IP=192.168.0.100
-   HOMEPAGE_VAR_DOMAIN_NAME=example.com
-   HOMEPAGE_VAR_CLOUDFLARE_ACCOUNT_ID=XXXX
-   ```
-
-3. Run the Docker container using the provided commands.
-
----
-
-## Configuration Examples
-
-### Docker Run Command
-
-#### Using a `.env.homepage` File
+### Run
 
 ```bash
 docker run \
   -d \
-  --name='homepage' \
-  --net='dsn' \
-  --env-file /path/to/homepage/.secrets/.env.homepage \
-  -e TZ="America/Denver" \
-  -p '3000:3000/tcp' \
-  -v '/path/to/homepage/config:/app/config:rw' \
-  -v '/path/to/homepage/icons:/app/icons:rw' \  # Optional mount for local icons
-  -v '/path/to/homepage/images:/app/images:rw' \  # Optional mount for local background images
-  -v '/mnt/':'/mnt':'ro' \  # Optional mount for local disk statistics
-  'ghcr.io/gethomepage/homepage:latest'
+  --name homepage \
+  --net my-network \
+  --env-file /path/to/.env.homepage \
+  -e TZ="America/Edmonton" \
+  -p 3000:3000 \
+  -v /path/to/config:/app/config:rw \
+  -v /path/to/icons:/app/icons:rw \
+  -v /path/to/images:/app/images:rw \
+  -v /mnt:/mnt:ro \
+  ghcr.io/gethomepage/homepage:latest
 ```
 
-#### Setting Environment Variables Inline
-
-```bash
-docker run \
-  -d \
-  --name='homepage' \
-  --net='dsn' \
-  -e 'HOMEPAGE_VAR_SERVER_IP=192.168.0.100' \
-  -e 'HOMEPAGE_VAR_DOMAIN_NAME=example.com' \
-  -e 'HOMEPAGE_VAR_CLOUDFLARE_ACCOUNT_ID=XXXX' \
-  -p '3000:3000/tcp' \
-  -v '/path/to/homepage/config:/app/config:rw' \
-  -v '/path/to/homepage/icons:/app/icons:rw' \  # Optional mount for local icons
-  -v '/path/to/homepage/images:/app/images:rw' \  # Optional mount for local background images
-  -v '/mnt/':'/mnt':'ro' \  # Optional mount for local disk statistics
-  'ghcr.io/gethomepage/homepage:latest'
-```
+The `/mnt` bind mount is required for the disk widgets in `widgets.yaml` to read Unraid array and cache disk usage.
 
 ### Environment Variables
 
-| Variable                             | Description                            |
-|--------------------------------------|----------------------------------------|
-| `HOMEPAGE_VAR_SERVER_IP`             | The IP address of the server.          |
-| `HOMEPAGE_VAR_DOMAIN_NAME`           | The domain name for the services.      |
-| `HOMEPAGE_VAR_CLOUDFLARE_ACCOUNT_ID` | Cloudflare account ID for integration. |
-| `HOMEPAGE_VAR_TAILSCALE_API_KEY`     | API key for Tailscale integration.     |
-| ...                                  | ...                                    |
+`{{HOMEPAGE_VAR_*}}` placeholders are substituted at container buildtime from enviroment variables.
+
+| Variable | Used by |
+|---|---|
+| `HOMEPAGE_VAR_DOMAIN_NAME` | All service URLs |
+| `HOMEPAGE_VAR_ROUTER_IP` | OPNSense, Tailscale ping, AdGuard |
+| `HOMEPAGE_VAR_UNRAID_API_KEY` | Unraid widget |
+| `HOMEPAGE_VAR_URBACKUP_USERNAME` | UrBackup widget |
+| `HOMEPAGE_VAR_URBACKUP_PASSWORD` | UrBackup widget |
+| `HOMEPAGE_VAR_TAILSCALE_DEVICE_ID` | Tailscale widget |
+| `HOMEPAGE_VAR_TAILSCALE_API_KEY` | Tailscale widget |
+| `HOMEPAGE_VAR_RADARR_API_KEY` | Radarr widget |
+| `HOMEPAGE_VAR_SONARR_API_KEY` | Sonarr widget |
+| `HOMEPAGE_VAR_BAZARR_API_KEY` | Bazarr widget |
+| `HOMEPAGE_VAR_OVERSEERR_API_KEY` | Overseerr widget |
+| `HOMEPAGE_VAR_OPNSENSE_KEY` | OPNSense widget |
+| `HOMEPAGE_VAR_OPNSENSE_SECRET` | OPNSense widget |
+| `HOMEPAGE_VAR_PROWLARR_API_KEY` | Prowlarr widget |
+| `HOMEPAGE_VAR_SABNZBD_API_KEY` | SABnzbd widget |
+| `HOMEPAGE_VAR_QBITTORRENT_USERNAME` | qBittorrent widget |
+| `HOMEPAGE_VAR_QBITTORRENT_PASSWORD` | qBittorrent widget |
+| `HOMEPAGE_VAR_CROWDSEC_USERNAME` | CrowdSec widget |
+| `HOMEPAGE_VAR_CROWDSEC_PASSWORD` | CrowdSec widget |
+| `HOMEPAGE_VAR_PLEX_API_TOKEN` | Plex widget |
+| `HOMEPAGE_VAR_TAUTULLI_API_KEY` | Tautulli widget |
+| `HOMEPAGE_VAR_CLOUDFLARE_ACCOUNT_ID` | Cloudflare tunnel widget |
+| `HOMEPAGE_VAR_CLOUDFLARE_TUNNEL_ID` | Cloudflare tunnel widget |
+| `HOMEPAGE_VAR_CLOUDFLARE_TUNNEL_API_KEY` | Cloudflare tunnel widget |
+| `HOMEPAGE_VAR_ADGUARD_USERNAME` | AdGuard widget |
+| `HOMEPAGE_VAR_ADGUARD_PASSWORD` | AdGuard widget |
+| `HOMEPAGE_VAR_HOMEASSISTANT_LLAT` | Home Assistant widget |
 
 ---
 
-## Custom Theme
+## Theme
 
-To enable the included Dracula theme:
+`config/custom.css` contains a Dracula theme based on [homepage-dracula](https://github.com/Jas-SinghFSU/homepage-dracula).
+`settings.yaml` must have `color: gray` uncommented, or colour must be manually chosen, for it to apply.
 
-1. Copy `config/custom.css` to your `config` directory.
-2. Update your `settings.yaml` to include:
-   ```yaml
-   theme: dark
-   color: gray
-   background: /images/dracula-solid.png
-   ```
-
-For more themes, check [homepage-dracula](https://github.com/Jas-SinghFSU/homepage-dracula).
+The background image (`images/dracula-solid.png`) is mounted from the local `images/` directory.
 
 ---
 
-## Screenshots
+## Screenshot
 
 ![Homepage Example](https://github.com/user-attachments/assets/ec8cd555-0528-4c93-a795-ab5867f5134b)
 
 ## Credits
 
 - [gethomepage](https://github.com/gethomepage/homepage)
-- Dracula Theme by [Jas-SinghFSU](https://github.com/Jas-SinghFSU/homepage-dracula)
+- Dracula theme by [Jas-SinghFSU](https://github.com/Jas-SinghFSU/homepage-dracula)
