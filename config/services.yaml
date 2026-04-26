@@ -97,8 +97,8 @@
           fields:
             - wanUpload
             - wanDownload
-          username: {{HOMEPAGE_VAR_OPNSENSE_USERNAME}}
-          password: {{HOMEPAGE_VAR_OPNSENSE_PASSWORD}}
+          username: {{HOMEPAGE_VAR_OPNSENSE_KEY}}
+          password: {{HOMEPAGE_VAR_OPNSENSE_SECRET}}
 
     - Prowlarr:
         href: https://prowlarr.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
@@ -152,7 +152,7 @@
           type: plex
           fields: ["movies", "tv"]
           url: http://plex:32400
-          key: {{HOMEPAGE_VAR_PLEX_API_KEY}}
+          key: {{HOMEPAGE_VAR_PLEX_API_TOKEN}}
 
     - Tautulli:
         href: https://tautulli.{{HOMEPAGE_VAR_DOMAIN_NAME}}/
