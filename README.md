@@ -6,8 +6,6 @@ My personal configuration files for [gethomepage/homepage](https://github.com/ge
 
 ### Prerequisites
 
-Before using these configurations, ensure you have the following:
-
 - **Docker** installed on your system ([Install Docker](https://docs.docker.com/get-docker/)).
 - A user-defined Docker network for your containers (create one with `docker network create my-network`).
 - A `.env.homepage` file with required environment variables.
@@ -47,7 +45,7 @@ docker run \
   -p '3000:3000/tcp' \
   -v '/path/to/homepage/config:/app/config:rw' \
   -v '/path/to/homepage/icons:/app/icons:rw' \  # Optional mount for local icons
-  -v '/path/to/homepage/images:/app/images:rw' \  # Option mount for local background images
+  -v '/path/to/homepage/images:/app/images:rw' \  # Optional mount for local background images
   -v '/mnt/':'/mnt':'ro' \  # Optional mount for local disk statistics
   'ghcr.io/gethomepage/homepage:latest'
 ```
@@ -65,14 +63,12 @@ docker run \
   -p '3000:3000/tcp' \
   -v '/path/to/homepage/config:/app/config:rw' \
   -v '/path/to/homepage/icons:/app/icons:rw' \  # Optional mount for local icons
-  -v '/path/to/homepage/images:/app/images:rw' \  # Option mount for local background images
+  -v '/path/to/homepage/images:/app/images:rw' \  # Optional mount for local background images
   -v '/mnt/':'/mnt':'ro' \  # Optional mount for local disk statistics
   'ghcr.io/gethomepage/homepage:latest'
 ```
 
 ### Environment Variables
-
-Here is a list of key environment variables and their purposes:
 
 | Variable                             | Description                            |
 |--------------------------------------|----------------------------------------|
@@ -86,7 +82,7 @@ Here is a list of key environment variables and their purposes:
 
 ## Custom Theme
 
-A custom Dracula theme is included in this repository. To enable it:
+To enable the included Dracula theme:
 
 1. Copy `config/custom.css` to your `config` directory.
 2. Update your `settings.yaml` to include:
