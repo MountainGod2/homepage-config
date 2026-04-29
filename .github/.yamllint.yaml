@@ -18,4 +18,6 @@ rules:
   indentation:
     spaces: 2
     indent-sequences: consistent
-  document-start: disable
+  document-start:
+    present: true
+  key-duplicates: enable

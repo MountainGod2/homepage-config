@@ -1,0 +1,8 @@
+[extend]
+useDefault = true
+
+[[rules]]
+id = "tailscale-api-key"
+description = "Tailscale API Key"
+regex = '''tskey-api-[A-Za-z0-9]+-[A-Za-z0-9]+'''
+tags = ["tailscale", "api-key"]
