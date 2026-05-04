@@ -31,39 +31,19 @@ The `/mnt` bind mount is required for the disk widgets in `widgets.yaml` to read
 
 ### Environment Variables
 
-`{{HOMEPAGE_VAR_*}}` placeholders are substituted at container buildtime from enviroment variables.
+`{{HOMEPAGE_VAR_*}}` placeholders are substituted at build time from environment variables.
 
-| Variable | Used by |
-|---|---|
-| `HOMEPAGE_VAR_DOMAIN_NAME` | All service URLs |
-| `HOMEPAGE_VAR_ROUTER_IP` | OPNSense, Tailscale ping, AdGuard |
-| `HOMEPAGE_VAR_UNRAID_API_KEY` | Unraid widget |
-| `HOMEPAGE_VAR_URBACKUP_USERNAME` | UrBackup widget |
-| `HOMEPAGE_VAR_URBACKUP_PASSWORD` | UrBackup widget |
-| `HOMEPAGE_VAR_TAILSCALE_DEVICE_ID` | Tailscale widget |
-| `HOMEPAGE_VAR_TAILSCALE_API_KEY` | Tailscale widget |
-| `HOMEPAGE_VAR_RADARR_API_KEY` | Radarr widget |
-| `HOMEPAGE_VAR_SONARR_API_KEY` | Sonarr widget |
-| `HOMEPAGE_VAR_BAZARR_API_KEY` | Bazarr widget |
-| `HOMEPAGE_VAR_OVERSEERR_API_KEY` | Overseerr widget |
-| `HOMEPAGE_VAR_OPNSENSE_KEY` | OPNSense widget |
-| `HOMEPAGE_VAR_OPNSENSE_SECRET` | OPNSense widget |
-| `HOMEPAGE_VAR_PROWLARR_API_KEY` | Prowlarr widget |
-| `HOMEPAGE_VAR_SABNZBD_API_KEY` | SABnzbd widget |
-| `HOMEPAGE_VAR_QBITTORRENT_USERNAME` | qBittorrent widget |
-| `HOMEPAGE_VAR_QBITTORRENT_PASSWORD` | qBittorrent widget |
-| `HOMEPAGE_VAR_CROWDSEC_USERNAME` | CrowdSec widget |
-| `HOMEPAGE_VAR_CROWDSEC_PASSWORD` | CrowdSec widget |
-| `HOMEPAGE_VAR_PLEX_API_TOKEN` | Plex widget |
-| `HOMEPAGE_VAR_TAUTULLI_API_KEY` | Tautulli widget |
-| `HOMEPAGE_VAR_CLOUDFLARE_ACCOUNT_ID` | Cloudflare tunnel widget |
-| `HOMEPAGE_VAR_CLOUDFLARE_TUNNEL_ID` | Cloudflare tunnel widget |
-| `HOMEPAGE_VAR_CLOUDFLARE_TUNNEL_API_KEY` | Cloudflare tunnel widget |
-| `HOMEPAGE_VAR_ADGUARD_USERNAME` | AdGuard widget |
-| `HOMEPAGE_VAR_ADGUARD_PASSWORD` | AdGuard widget |
-| `HOMEPAGE_VAR_HOMEASSISTANT_LLAT` | Home Assistant widget |
+| .env.homepage |
+|---|
+| `HOMEPAGE_VAR_DOMAIN_NAME=example.com` |
+| `HOMEPAGE_VAR_ROUTER_IP=192.168.0.1` |
+| `HOMEPAGE_VAR_UNRAID_API_KEY="XXXXXXXXXXXXX"` |
+| `HOMEPAGE_VAR_TAILSCALE_DEVICE_ID="XXXXXXXXXXXXX"` |
+| `HOMEPAGE_VAR_TAILSCALE_API_KEY="XXXXXXXXXXXXX"` |
+| etc. |
 
----
+See [.env.homepage.sample](https://github.com/MountainGod2/homepage-config/blob/main/.secrets/.env.homepage.sample)
+for the full list of variables.
 
 ## Theme
 
